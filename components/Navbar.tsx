@@ -4,8 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { User } from "@supabase/supabase-js";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { User as UserIcon, LogOut } from "lucide-react";
+import { signOut } from "@/app/auth/actions";
 
-export function Navbar() {
+export function Navbar({ user }: { user: User | null }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,6 +37,10 @@ export function Navbar() {
     { name: "Gallery", href: "/gallery" },
     { name: "About", href: "/about" },
   ];
+
+  const name =
+    user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
+  const initials = name.substring(0, 2).toUpperCase();
 
   return (
     <header
@@ -68,13 +84,57 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* Right Side: Login Button */}
+        {/* Right Side: Auth / Profile */}
         <div className="flex items-center">
-          <Link href="/login">
-            <Button className="rounded-full shadow-sm shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/30 active:translate-y-0 active:scale-95">
-              Member Login
-            </Button>
-          </Link>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-10 flex items-center gap-2 pl-2 pr-4 rounded-full border border-border/50 hover:bg-muted/50 transition-all"
+                >
+                  <Avatar className="h-7 w-7 border border-primary/20">
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium hidden sm:inline-block">
+                    {name}
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/profile" className="cursor-pointer">
+                    <UserIcon className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
+                  onClick={() => signOut()}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link href="/login">
+              <Button className="rounded-full shadow-sm shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/30 active:translate-y-0 active:scale-95">
+                Member Login
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>

@@ -8,8 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { VerifyOtpForm } from "@/components/auth/VerifyOtpForm";
 
-export default function VerifyEmailPage() {
+export default async function VerifyEmailPage(props: {
+  searchParams: Promise<{ email?: string }>;
+}) {
+  const searchParams = await props.searchParams;
+  const email = searchParams.email;
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 py-24 sm:p-8 bg-background relative overflow-hidden">
       {/* Background aesthetics */}
@@ -40,28 +46,51 @@ export default function VerifyEmailPage() {
             </div>
 
             <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
-              Check your email
+              {email ? "Enter Verification Code" : "Check your email"}
             </CardTitle>
             <CardDescription className="text-muted-foreground pt-2">
-              We&apos;ve sent a verification link to your email address. Please
-              click the link to verify your account and to log in.
+              {email ? (
+                <>
+                  We&apos;ve sent a 6-digit code to{" "}
+                  <strong className="text-foreground">{email}</strong>. Please
+                  enter it below to verify your account.
+                </>
+              ) : (
+                "We've sent a verification link to your email address. Please click the link to verify your account and to log in."
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 pt-4">
-            <p className="text-sm text-muted-foreground px-4">
-              Don&apos;t see it? Check your spam folder or Promotions tab, just
-              in case.
-            </p>
+            {email ? (
+              <VerifyOtpForm email={email} />
+            ) : (
+              <p className="text-sm text-muted-foreground px-4">
+                Don&apos;t see it? Check your spam folder or Promotions tab,
+                just in case.
+              </p>
+            )}
           </CardContent>
-          <CardFooter className="flex flex-col gap-4 pb-8">
-            <Link href="/login" className="w-full">
-              <Button
-                className="w-full h-12 text-base font-semibold shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:-translate-y-0.5"
-                size="lg"
-              >
-                Back to Sign In
-              </Button>
-            </Link>
+          <CardFooter className="flex flex-col gap-4 pb-8 mt-2">
+            {!email && (
+              <Link href="/login" className="w-full">
+                <Button
+                  className="w-full h-12 text-base font-semibold shadow-md shadow-primary/20 transition-all hover:shadow-lg hover:-translate-y-0.5"
+                  size="lg"
+                >
+                  Back to Sign In
+                </Button>
+              </Link>
+            )}
+            {email && (
+              <div className="text-sm text-muted-foreground">
+                <Link
+                  href="/login"
+                  className="hover:text-primary transition-colors"
+                >
+                  Back to login
+                </Link>
+              </div>
+            )}
           </CardFooter>
         </Card>
       </div>

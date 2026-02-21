@@ -75,8 +75,13 @@ export function RegisterForm() {
       setError(result.error);
       setIsLoading(false);
     } else {
-      // Successful registration, redirect to verify email
-      router.push("/verify-email");
+      // Successful registration, redirect to verify email passing the used email
+      const emailToPass =
+        data.email && data.email.trim() !== ""
+          ? data.email
+          : `${data.phone?.replace(/[^0-9]/g, "")}@example.com`;
+
+      router.push(`/verify-email?email=${encodeURIComponent(emailToPass)}`);
       router.refresh();
     }
   }

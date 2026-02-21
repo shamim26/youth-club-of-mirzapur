@@ -67,3 +67,35 @@ export async function signOut() {
   await supabase.auth.signOut();
   revalidatePath("/", "layout");
 }
+
+export async function verifyOtpAction(email: string, token: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: "signup",
+  });
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath("/", "layout");
+  return { success: true };
+}
+
+export async function resendOtpAction(email: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+  });
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
+}
