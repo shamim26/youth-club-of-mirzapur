@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { toast } from "sonner";
 
 import { signUpWithEmail } from "@/app/auth/actions";
 import { Button } from "@/components/ui/button";
@@ -34,10 +35,7 @@ const registerSchema = z
   .object({
     fullName: z.string().min(2, "Name must be at least 2 characters"),
     phone: z.string().optional(),
-    email: z
-      .string()
-      .email("Invalid email address")
-      .min(1, "Email is required"),
+    email: z.email("Invalid email address").min(1, "Email is required"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
   })
@@ -73,8 +71,10 @@ export function RegisterForm() {
 
     if (result.error) {
       setError(result.error);
+      toast.error(result.error);
       setIsLoading(false);
     } else {
+      toast.success("Registration successful! Redirecting to verification...");
       // Successful registration, redirect to verify email passing the used email
       const emailToPass =
         data.email && data.email.trim() !== ""
@@ -132,7 +132,28 @@ export function RegisterForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="e.g. John Doe"
+                      placeholder="e.g. Nur Amin Khan"
+                      className="h-12 bg-background border-border focus-visible:ring-primary focus-visible:ring-offset-background"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground font-semibold">
+                    Email
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="name@example.com"
                       className="h-12 bg-background border-border focus-visible:ring-primary focus-visible:ring-offset-background"
                       {...field}
                     />
@@ -148,36 +169,12 @@ export function RegisterForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-semibold">
-                    Phone Number*
+                    Phone Number (optional)
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="tel"
                       placeholder="+880 1..."
-                      className="h-12 bg-background border-border focus-visible:ring-primary focus-visible:ring-offset-background"
-                      {...field}
-                    />
-                  </FormControl>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Required for club WhatsApp group verification.
-                  </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground font-semibold">
-                    Email (Optional)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="name@example.com"
                       className="h-12 bg-background border-border focus-visible:ring-primary focus-visible:ring-offset-background"
                       {...field}
                     />

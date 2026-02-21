@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { toast } from "sonner";
 
 import { signInWithEmail } from "@/app/auth/actions";
 import { Button } from "@/components/ui/button";
@@ -59,8 +60,10 @@ export function LoginForm() {
 
     if (result.error) {
       setError(result.error);
+      toast.error(result.error);
       setIsLoading(false);
     } else {
+      toast.success("Welcome back!");
       // Successful login, redirect to home/dashboard
       router.push("/");
       router.refresh(); // Ensure the layout picks up the new auth state
