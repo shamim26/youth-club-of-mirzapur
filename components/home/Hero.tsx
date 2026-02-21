@@ -12,14 +12,15 @@ export function Hero() {
           alt="Youth Club of Mirzapur Community"
           fill
           priority
+          quality={75}
           className="object-cover object-center"
         />
       </div>
 
       {/* Dark/Gold Overlays for readability and theme blending */}
-      <div className="absolute inset-0 bg-background/70 mix-blend-multiply -z-10" />
-      <div className="absolute inset-0 bg-linear-to-t from-background via-background/70 to-transparent -z-10" />
-      <div className="absolute inset-0 bg-primary/10 mix-blend-overlay backdrop-blur-xs -z-10" />
+      <div className="absolute inset-0 bg-background/80 md:bg-background/70 mix-blend-multiply -z-10" />
+      <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 md:via-background/70 to-transparent -z-10" />
+      <div className="absolute inset-0 bg-primary/10 mix-blend-overlay md:backdrop-blur-xs -z-10" />
 
       {/* Centered Content Area */}
       <div className="relative z-10 container mx-auto px-6 py-20 lg:px-16 xl:px-24 text-center flex flex-col items-center pt-32">

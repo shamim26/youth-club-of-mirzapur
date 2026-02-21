@@ -14,12 +14,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { User as UserIcon, LogOut } from "lucide-react";
+import { User as UserIcon, LogOut, Menu } from "lucide-react";
 import { signOut } from "@/app/auth/actions";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export function Navbar({ user }: { user: User | null }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,8 +59,46 @@ export function Navbar({ user }: { user: User | null }) {
       }`}
     >
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Left Side: Logo */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          {/* Mobile Menu Trigger */}
+          <div className="md:hidden">
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[70vw] sm:w-[300px]">
+                <SheetHeader className="text-center pb-6">
+                  <SheetTitle>
+                    <span className="bg-linear-to-br from-primary to-accent bg-clip-text text-2xl font-black tracking-tighter text-transparent">
+                      Youth Club
+                    </span>
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 px-9">
+                  {navLinks.map((link) => {
+                    const isActive = pathname === link.href;
+                    return (
+                      <Link
+                        key={link.name}
+                        href={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`text-base font-semibold transition-colors hover:text-primary ${
+                          isActive ? "text-primary" : "text-muted-foreground"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          {/* Left Side: Logo */}
           <Link
             href="/"
             className="group flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
@@ -114,7 +160,10 @@ export function Navbar({ user }: { user: User | null }) {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/profile" className="cursor-pointer">
+                  <Link
+                    href="/profile"
+                    className="cursor-pointer whitespace-nowrap"
+                  >
                     <UserIcon className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                   </Link>
