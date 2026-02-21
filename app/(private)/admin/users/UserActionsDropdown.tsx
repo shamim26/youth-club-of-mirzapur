@@ -39,7 +39,7 @@ import {
   changeUserRole,
   deleteUser,
   UserRole,
-} from "../actions";
+} from "./actions";
 
 export interface Profile {
   id: string;
