@@ -1,7 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { CoreFeatures } from "@/components/home/CoreFeatures";
 import { UpcomingEvents } from "@/components/home/UpcomingEvents";
-import { Footer } from "@/components/home/Footer";
 
 export default function Home() {
   return (
@@ -11,7 +10,6 @@ export default function Home() {
         <CoreFeatures />
         <UpcomingEvents />
       </main>
-      <Footer />
     </div>
   );
 }
