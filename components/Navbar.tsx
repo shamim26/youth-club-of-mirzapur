@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { User as UserIcon, LogOut, Menu } from "lucide-react";
+import { User as UserIcon, LogOut, Menu, LayoutDashboard } from "lucide-react";
 import { signOut } from "@/app/auth/actions";
 import {
   Sheet,
@@ -24,7 +24,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export function Navbar({ user }: { user: User | null }) {
+export function Navbar({ user, role }: { user: User | null; role: string }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -159,6 +159,17 @@ export function Navbar({ user }: { user: User | null }) {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                {role === "admin" || role === "super_admin" ? (
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/admin"
+                      className="cursor-pointer whitespace-nowrap"
+                    >
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      <span>Admin Dashboard</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ) : null}
                 <DropdownMenuItem asChild>
                   <Link
                     href="/profile"
