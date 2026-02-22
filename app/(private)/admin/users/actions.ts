@@ -9,7 +9,7 @@ export type UserRole = "super_admin" | "admin" | "member";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 // Helper function to verify the executor's authorization level
-async function verifyAdminAccess(
+export async function verifyAdminAccess(
   supabase: SupabaseClient,
   requiredRole: "admin" | "super_admin" = "admin",
 ) {
