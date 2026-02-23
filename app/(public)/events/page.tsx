@@ -3,32 +3,57 @@ import { YouthEvent } from "@/types/events";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Calendar, MapPin } from "lucide-react";
+import { Calendar, MapPin, Clock } from "lucide-react";
 
-function EventCard({ event }: { event: YouthEvent }) {
+export function EventCard({ event }: { event: YouthEvent }) {
   const dateObj = event.event_date ? new Date(event.event_date) : null;
+
+  // Extract custom fields if any to display a category/type label
+  const dynamicData = event.dynamic_data as Record<string, string> | null;
+  const category =
+    dynamicData?.Category || dynamicData?.Type || "Community Event";
+
   return (
     <div className="relative group overflow-hidden rounded-3xl bg-card border border-border/50 shadow-md transition-shadow hover:shadow-xl">
-      <div className="flex flex-col md:flex-row">
-        {/* Date/Accent Section */}
-        <div className="relative md:w-1/4 min-h-[200px] md:min-h-auto bg-muted">
+      <div className="flex flex-col lg:flex-row">
+        {/* Image/Date Section */}
+        <div className="relative lg:w-2/5 min-h-[300px] lg:min-h-auto bg-muted">
+          {/* Image Placeholder Background */}
           <div className="absolute inset-0 bg-linear-to-br from-primary/90 to-primary/40 p-6 flex flex-col justify-between">
-            {dateObj && (
-              <div className="bg-background/95 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg transform group-hover:-translate-y-1 transition-transform inline-block self-start">
-                <span className="block text-primary font-bold text-sm uppercase tracking-wider">
-                  {format(dateObj, "MMM")}
+            <div className="flex justify-between items-start">
+              {dateObj ? (
+                <div className="bg-background/95 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg transform group-hover:-translate-y-1 transition-transform inline-block self-start">
+                  <span className="block text-primary font-bold text-sm uppercase tracking-wider">
+                    {format(dateObj, "MMM")}
+                  </span>
+                  <span className="block text-foreground font-black text-3xl">
+                    {format(dateObj, "dd")}
+                  </span>
+                </div>
+              ) : (
+                <div className="bg-background/95 backdrop-blur-md rounded-2xl p-4 text-center shadow-lg transform group-hover:-translate-y-1 transition-transform inline-block self-start">
+                  <span className="block text-primary font-bold text-sm uppercase tracking-wider">
+                    TBD
+                  </span>
+                </div>
+              )}
+              {event.is_published && (
+                <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase shadow-sm">
+                  Upcoming
                 </span>
-                <span className="block text-foreground font-black text-3xl">
-                  {format(dateObj, "dd")}
-                </span>
-              </div>
-            )}
+              )}
+            </div>
+            <div className="mt-auto">
+              <h4 className="text-white/80 font-medium text-sm tracking-wider uppercase mb-2">
+                {category}
+              </h4>
+            </div>
           </div>
         </div>
 
         {/* Event Details Section */}
-        <div className="flex-1 p-6 md:p-8 flex flex-col justify-center bg-card">
-          <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
+        <div className="flex-1 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-card">
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
             {event.title}
           </h3>
 
@@ -38,17 +63,23 @@ function EventCard({ event }: { event: YouthEvent }) {
             </p>
           )}
 
-          <div className="space-y-3 mb-8">
-            {event.event_date && (
+          <div className="space-y-4 mb-10">
+            {dateObj && (
               <div className="flex items-center text-muted-foreground">
-                <Calendar className="w-5 h-5 mr-3 text-primary/70" />
-                <span>{format(dateObj!, "EEEE, MMMM do, yyyy 'at' p")}</span>
+                <Clock className="w-5 h-5 mr-3 text-primary/70" />
+                <span>{format(dateObj, "p")}</span>
               </div>
             )}
             {event.location && (
               <div className="flex items-center text-muted-foreground">
                 <MapPin className="w-5 h-5 mr-3 text-primary/70" />
                 <span>{event.location}</span>
+              </div>
+            )}
+            {dateObj && (
+              <div className="flex items-center text-muted-foreground">
+                <Calendar className="w-5 h-5 mr-3 text-primary/70" />
+                <span>{format(dateObj, "EEEE, MMMM do, yyyy")}</span>
               </div>
             )}
           </div>
