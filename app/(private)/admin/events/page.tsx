@@ -78,7 +78,7 @@ export default async function AdminEventsPage() {
                 <TableCell className="font-medium">{event.title}</TableCell>
                 <TableCell>
                   {event.event_date
-                    ? format(new Date(event.event_date), "PP p")
+                    ? format(new Date(event.event_date), "PP")
                     : "TBD"}
                 </TableCell>
                 <TableCell>{event.location || "N/A"}</TableCell>

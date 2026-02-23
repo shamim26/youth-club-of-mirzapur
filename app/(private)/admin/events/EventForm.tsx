@@ -14,7 +14,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Plus, Trash } from "lucide-react";
+import { Plus, Trash, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { YouthEvent } from "@/types/events";
 import { createEvent, updateEvent } from "./actions";
 import { toast } from "sonner";
@@ -23,7 +31,7 @@ import { useRouter } from "next/navigation";
 const eventFormSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   description: z.string().optional(),
-  event_date: z.string().optional(),
+  event_date: z.date().optional(),
   location: z.string().optional(),
   is_published: z.boolean().default(false),
   dynamicData: z
@@ -74,9 +82,7 @@ export default function EventForm({ event }: { event?: YouthEvent }) {
     defaultValues: {
       title: event?.title || "",
       description: event?.description || "",
-      event_date: event?.event_date
-        ? new Date(event.event_date).toISOString().slice(0, 16)
-        : "",
+      event_date: event?.event_date ? new Date(event.event_date) : undefined,
       location: event?.location || "",
       is_published: event?.is_published ?? false,
       dynamicData: initialDynamicData,
@@ -116,9 +122,7 @@ export default function EventForm({ event }: { event?: YouthEvent }) {
     const payload = {
       title: data.title,
       description: data.description || "",
-      event_date: data.event_date
-        ? new Date(data.event_date).toISOString()
-        : null,
+      event_date: data.event_date ? data.event_date.toISOString() : null,
       location: data.location || "",
       is_published: data.is_published,
       dynamic_data,
@@ -196,11 +200,36 @@ export default function EventForm({ event }: { event?: YouthEvent }) {
             control={form.control}
             name="event_date"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Date & Time</FormLabel>
-                <FormControl>
-                  <Input type="datetime-local" {...field} />
-                </FormControl>
+              <FormItem className="flex flex-col mt-2.5">
+                <FormLabel>Event Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "d MMMM yyyy")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date < new Date()}
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}
@@ -220,30 +249,6 @@ export default function EventForm({ event }: { event?: YouthEvent }) {
             )}
           />
         </div>
-
-        <FormField
-          control={form.control}
-          name="is_published"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
-              <FormControl>
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 rounded border-gray-300 focus:ring-primary text-primary"
-                  checked={field.value}
-                  onChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Publish Event</FormLabel>
-                <FormDescription>
-                  Make this event visible to the public. You can keep it drafted
-                  while adding polls or photos later.
-                </FormDescription>
-              </div>
-            </FormItem>
-          )}
-        />
 
         <div className="space-y-4 rounded-md border p-4 bg-muted/20">
           <div>
@@ -429,6 +434,30 @@ export default function EventForm({ event }: { event?: YouthEvent }) {
             Create Poll
           </Button>
         </div>
+
+        <FormField
+          control={form.control}
+          name="is_published"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-gray-300 focus:ring-primary text-primary"
+                  checked={field.value}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Publish Event</FormLabel>
+                <FormDescription>
+                  Make this event visible to the public. You can keep it drafted
+                  while adding polls or photos later.
+                </FormDescription>
+              </div>
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting

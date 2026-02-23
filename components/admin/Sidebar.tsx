@@ -12,7 +12,7 @@ import {
   ShieldAlert,
   Menu,
   Home,
-  Image
+  Image,
 } from "lucide-react";
 import {
   Sheet,
@@ -51,10 +51,10 @@ export function Sidebar({ role }: SidebarProps) {
       allowedRoles: ["admin", "super_admin"],
     },
     {
-      name:"Photo Gallery",
-      href:"/admin/gallery",
-      icon:Image,
-      allowedRoles:["admin", "super_admin"],
+      name: "Photo Gallery",
+      href: "/admin/gallery",
+      icon: Image,
+      allowedRoles: ["admin", "super_admin"],
     },
     {
       name: "Club Settings",
@@ -116,7 +116,7 @@ export function Sidebar({ role }: SidebarProps) {
   return (
     <>
       {/* Mobile Top Navigation */}
-      <div className="md:hidden flex items-center justify-between bg-card border-b border-border/50 h-16 px-4 w-full shrink-0">
+      <div className="md:hidden sticky top-0 z-40 flex items-center justify-between bg-card border-b border-border/50 h-16 px-4 w-full shrink-0 shadow-sm">
         <div className="flex items-center gap-2">
           <span className="text-xl font-bold tracking-tight bg-linear-to-br from-primary to-accent bg-clip-text text-transparent">
             Admin Portal
@@ -151,7 +151,7 @@ export function Sidebar({ role }: SidebarProps) {
       </div>
 
       {/* Desktop Sidebar */}
-      <aside className="w-64 min-h-screen bg-card border-r border-border/50 text-card-foreground hidden md:flex flex-col shrink-0">
+      <aside className="fixed inset-y-0 left-0 z-40 w-64 bg-card border-r border-border/50 text-card-foreground hidden md:flex flex-col shadow-sm">
         <div className="h-16 flex items-center px-6 border-b border-border/50 shrink-0">
           <span className="text-xl font-bold tracking-tight bg-linear-to-br from-primary to-accent bg-clip-text text-transparent">
             Admin

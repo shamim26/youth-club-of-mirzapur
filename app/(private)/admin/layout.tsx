@@ -37,7 +37,7 @@ export default async function AdminLayout({
       {/* Sidebar with the user's role metadata */}
       <Sidebar role={role} />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col md:pl-64 overflow-hidden">
         {/* Main Admin Content */}
         <main className="flex-1 overflow-y-auto w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
           {children}
