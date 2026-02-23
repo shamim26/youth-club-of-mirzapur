@@ -459,13 +459,15 @@ export default function EventForm({ event }: { event?: YouthEvent }) {
           )}
         />
 
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting
-            ? "Saving..."
-            : event
-              ? "Update Event"
-              : "Create Event"}
-        </Button>
+        {(!event || form.formState.isDirty) && (
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting
+              ? "Saving..."
+              : event
+                ? "Update Event"
+                : "Create Event"}
+          </Button>
+        )}
       </form>
     </Form>
   );

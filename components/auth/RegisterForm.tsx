@@ -34,7 +34,14 @@ import Logo from "../Logo";
 const registerSchema = z
   .object({
     fullName: z.string().min(2, "Name must be at least 2 characters"),
-    phone: z.string().optional(),
+    phone: z
+      .string()
+      .regex(
+        /^(?:\+?88|0088)?01[3-9]\d{8}$/,
+        "Invalid Bangladeshi phone number",
+      )
+      .optional()
+      .or(z.literal("")),
     email: z.email("Invalid email address").min(1, "Email is required"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
