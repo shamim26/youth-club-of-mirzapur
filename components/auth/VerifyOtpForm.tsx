@@ -78,7 +78,7 @@ export function VerifyOtpForm({ email }: { email: string }) {
       setError(result.error);
       setIsLoading(false);
     } else {
-      // Successful verification
+
       router.push("/");
       router.refresh();
     }

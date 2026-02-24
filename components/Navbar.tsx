@@ -23,8 +23,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import Image from "next/image";
+import { GlobalApprovalPopup } from "./auth/GlobalApprovalPopup";
 
-export function Navbar({ user, role }: { user: User | null; role: string }) {
+export function Navbar({
+  user,
+  role,
+  isApproved,
+}: {
+  user: User | null;
+  role: string;
+  isApproved?: boolean;
+}) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -60,52 +70,18 @@ export function Navbar({ user, role }: { user: User | null; role: string }) {
     >
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
-          {/* Mobile Menu Trigger */}
-          <div className="md:hidden">
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[70vw] sm:w-[300px]">
-                <SheetHeader className="text-center pb-6">
-                  <SheetTitle>
-                    <span className="bg-linear-to-br from-primary to-accent bg-clip-text text-2xl font-black tracking-tighter text-transparent">
-                      Youth Club
-                    </span>
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col gap-4 px-9">
-                  {navLinks.map((link) => {
-                    const isActive = pathname === link.href;
-                    return (
-                      <Link
-                        key={link.name}
-                        href={link.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`text-base font-semibold transition-colors hover:text-primary ${
-                          isActive ? "text-primary" : "text-muted-foreground"
-                        }`}
-                      >
-                        {link.name}
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </div>
-
           {/* Left Side: Logo */}
           <Link
             href="/"
             className="group flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
           >
-            <span className="bg-linear-to-br from-primary to-accent bg-clip-text text-2xl font-black tracking-tighter text-transparent">
-              YCM
-            </span>
+            <Image
+              src="/logo-x.png"
+              alt="Logo"
+              width={115}
+              height={115}
+              className="rounded-full pt-2 md:pt-0"
+            />
           </Link>
         </div>
 
@@ -131,7 +107,7 @@ export function Navbar({ user, role }: { user: User | null; role: string }) {
         </nav>
 
         {/* Right Side: Auth / Profile */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-2 sm:gap-4">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -191,12 +167,51 @@ export function Navbar({ user, role }: { user: User | null; role: string }) {
           ) : (
             <Link href="/login">
               <Button className="rounded-full shadow-sm shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary/30 active:translate-y-0 active:scale-95">
-                Member Login
+                Login
               </Button>
             </Link>
           )}
+
+          {/* Mobile Menu Trigger */}
+          <div className="md:hidden">
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[70vw] sm:w-[300px]">
+                <SheetHeader className="text-center pb-6">
+                  <SheetTitle>
+                    <span className="bg-linear-to-br from-primary to-accent bg-clip-text text-2xl font-black tracking-tighter text-transparent">
+                      Youth Club
+                    </span>
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 px-9">
+                  {navLinks.map((link) => {
+                    const isActive = pathname === link.href;
+                    return (
+                      <Link
+                        key={link.name}
+                        href={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`text-base font-semibold transition-colors hover:text-primary ${
+                          isActive ? "text-primary" : "text-muted-foreground"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
+      <GlobalApprovalPopup isApproved={isApproved} />
     </header>
   );
 }

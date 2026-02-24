@@ -49,7 +49,7 @@ export async function signUpWithEmail(data: {
     options: {
       data: {
         full_name: data.fullName,
-        phone_number: data.phone,
+        phone_number: data.phone?.trim() === "" ? null : data.phone?.trim(),
       },
     },
   });
@@ -97,5 +97,49 @@ export async function resendOtpAction(email: string) {
     return { success: false, error: error.message };
   }
 
+  return { success: true };
+}
+
+export async function sendPasswordResetOtp(email: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
+}
+
+export async function verifyPasswordResetOtp(email: string, token: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: "recovery",
+  });
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  // OTP successfully verified, session is established
+  return { success: true };
+}
+
+export async function updatePassword(password: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.updateUser({
+    password,
+  });
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath("/", "layout");
   return { success: true };
 }

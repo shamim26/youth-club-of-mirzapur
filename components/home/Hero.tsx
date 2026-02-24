@@ -1,8 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
 
-export function Hero() {
+export async function Hero() {
+  const supabase = await createClient();
+
+  const { data: user } = await supabase.auth.getUser();
+
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
       {/* Full Background Image */}
@@ -13,7 +18,7 @@ export function Hero() {
           fill
           priority
           quality={75}
-          className="object-cover object-center"
+          className="object-cover object-top"
         />
       </div>
 
@@ -50,7 +55,7 @@ export function Hero() {
                 View Upcoming Events
               </Button>
             </Link>
-            <Link href="/join">
+            <Link href={user ? "/profile" : "/login"}>
               <Button
                 variant="outline"
                 size="lg"

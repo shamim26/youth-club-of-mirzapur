@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 import { signInWithEmail } from "@/app/auth/actions";
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,7 @@ export function LoginForm() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -143,12 +145,30 @@ export function LoginForm() {
                     </Link>
                   </div>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="••••••••"
-                      className="h-12 bg-background border-border focus-visible:ring-primary focus-visible:ring-offset-background"
-                      {...field}
-                    />
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        className="h-12 bg-background border-border focus-visible:ring-primary focus-visible:ring-offset-background pr-10"
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-12 w-12 text-muted-foreground hover:text-foreground"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                        <span className="sr-only">
+                          Toggle password visibility
+                        </span>
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

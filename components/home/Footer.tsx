@@ -1,45 +1,73 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Twitter, Instagram } from "lucide-react";
 
 export function Footer() {
   return (
     <footer className="bg-muted text-white pt-12 md:pt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-8 pb-12 mb-8">
-          <div className="text-center md:text-left max-w-sm">
-            <Link href="/" className="inline-block mb-6">
-              <span className="font-black text-3xl tracking-tighter bg-clip-text text-transparent bg-linear-to-br from-primary to-accent">
-                YCM
-              </span>
+          <div className="flex flex-col items-center md:items-start max-w-sm space-y-4">
+            <Link
+              href="/"
+              className="inline-block transition-transform hover:scale-105 active:scale-95"
+            >
+              <Image
+                src="/logo-y.png"
+                alt="Youth Club of Mirzapur Logo"
+                width={280}
+                height={280}
+                className="object-contain"
+                priority
+              />
             </Link>
-            <p className="text-white/70 text-sm leading-relaxed">
-              Serving the community by organizing local events, archiving our
-              shared memories, and securely managing our collective funds.
-            </p>
           </div>
 
-          <div className="flex gap-4">
-            <a
-              href="#"
-              className="w-10 h-10 rounded-full bg-background/5 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              <Facebook className="w-5 h-5" />
-              <span className="sr-only">Facebook</span>
-            </a>
-            <a
-              href="#"
-              className="w-10 h-10 rounded-full bg-background/5 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              <Twitter className="w-5 h-5" />
-              <span className="sr-only">Twitter</span>
-            </a>
-            <a
-              href="#"
-              className="w-10 h-10 rounded-full bg-background/5 flex items-center justify-center transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              <Instagram className="w-5 h-5" />
-              <span className="sr-only">Instagram</span>
-            </a>
+          <div className="flex flex-col sm:flex-row gap-12 md:gap-24 text-center sm:text-left">
+            <div className="flex flex-col space-y-4">
+              <h3 className="font-semibold text-white tracking-wider uppercase text-sm">
+                Pages
+              </h3>
+              <nav className="flex flex-col space-y-3">
+                <Link
+                  href="/events"
+                  className="text-white/70 hover:text-primary transition-colors text-sm"
+                >
+                  Events
+                </Link>
+                <Link
+                  href="/gallery"
+                  className="text-white/70 hover:text-primary transition-colors text-sm"
+                >
+                  Gallery
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-white/70 hover:text-primary transition-colors text-sm"
+                >
+                  About
+                </Link>
+              </nav>
+            </div>
+
+            <div className="flex flex-col space-y-4">
+              <h3 className="font-semibold text-white tracking-wider uppercase text-sm">
+                Legal
+              </h3>
+              <nav className="flex flex-col space-y-3">
+                <Link
+                  href="/privacy"
+                  className="text-white/70 hover:text-primary transition-colors text-sm"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/terms"
+                  className="text-white/70 hover:text-primary transition-colors text-sm"
+                >
+                  Terms & Conditions
+                </Link>
+              </nav>
+            </div>
           </div>
         </div>
       </div>
