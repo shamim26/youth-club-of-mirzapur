@@ -11,9 +11,61 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Youth Club of Mirzapur",
+  metadataBase: new URL("https://youthclubofmirzapur.vercel.app"), // Placeholder domain, you can adapt this
+  title: {
+    default: "Youth Club of Mirzapur",
+    template: "%s | Youth Club of Mirzapur",
+  },
   description:
-    "Youth Club of Mirzapur is a community platform for our village to organize events and do many staffs.",
+    "Youth Club of Mirzapur is a community platform for our village.",
+  keywords: [
+    "Mirzapur",
+    "Youth Club",
+    "Community",
+    "Village",
+    "Events",
+    "Treasury",
+  ],
+  authors: [{ name: "Youth Club of Mirzapur" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://youthclubofmirzapur.vercel.app",
+    title: "Youth Club of Mirzapur - Community Platform",
+    description:
+      "Join the Youth Club of Mirzapur! A community platform for our village to organize events and do many staffs.",
+    siteName: "Youth Club of Mirzapur",
+    images: [
+      {
+        url: "/logo-y.png",
+        width: 1200,
+        height: 630,
+        alt: "Youth Club of Mirzapur Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Youth Club of Mirzapur",
+    description: "A community platform for our village.",
+    images: ["/logo-y.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/logo-x.png",
+    shortcut: "/logo-x.png",
+    apple: "/logo-x.png",
+  },
 };
 
 export default function RootLayout({

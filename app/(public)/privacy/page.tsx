@@ -1,8 +1,15 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Youth Club of Mirzapur",
-  description: "Privacy Policy of the Youth Club of Mirzapur.",
+  title: "Privacy Policy",
+  description:
+    "Read the Privacy Policy of the Youth Club of Mirzapur to understand how we collect and protect your data.",
+  openGraph: {
+    title: "Privacy Policy | Youth Club of Mirzapur",
+    description:
+      "Read the Privacy Policy of the Youth Club of Mirzapur to understand how we collect and protect your data.",
+    url: "/privacy",
+  },
 };
 
 export default function PrivacyPolicyPage() {

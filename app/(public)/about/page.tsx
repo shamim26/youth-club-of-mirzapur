@@ -1,6 +1,19 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn more about the mission, vision, and story of the Youth Club of Mirzapur.",
+  openGraph: {
+    title: "About Us | Youth Club of Mirzapur",
+    description:
+      "Learn more about the mission, vision, and story of the Youth Club of Mirzapur.",
+    url: "/about",
+  },
+};
 
 export default function AboutPage() {
   return (

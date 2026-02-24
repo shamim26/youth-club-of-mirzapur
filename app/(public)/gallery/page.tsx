@@ -1,10 +1,18 @@
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import { EventPhoto } from "@/types/events";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Photo Gallery | Youth Club",
-  description: "Browse photos from our recent events and activities.",
+export const metadata: Metadata = {
+  title: "Photo Gallery",
+  description:
+    "Browse photos from our recent events and activities. See the wonderful memories created by the Youth Club of Mirzapur.",
+  openGraph: {
+    title: "Photo Gallery | Youth Club of Mirzapur",
+    description:
+      "Browse photos from our recent events and activities. See the wonderful memories created by the Youth Club of Mirzapur.",
+    url: "/gallery",
+  },
 };
 
 const placeholderImages = [

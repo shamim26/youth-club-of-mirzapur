@@ -4,6 +4,19 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Calendar, MapPin, Clock } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Events",
+  description:
+    "Discover upcoming and past community events hosted by the Youth Club of Mirzapur. Join us to make lasting memories.",
+  openGraph: {
+    title: "Events | Youth Club of Mirzapur",
+    description:
+      "Discover upcoming and past community events hosted by the Youth Club of Mirzapur. Join us to make lasting memories.",
+    url: "/events",
+  },
+};
 
 export function EventCard({ event }: { event: YouthEvent }) {
   const dateObj = event.event_date ? new Date(event.event_date) : null;

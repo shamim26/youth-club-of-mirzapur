@@ -1,8 +1,15 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | Youth Club of Mirzapur",
-  description: "Terms and Conditions for joining the Youth Club of Mirzapur.",
+  title: "Terms and Conditions",
+  description:
+    "Read the Terms and Conditions and community guidelines for joining the Youth Club of Mirzapur.",
+  openGraph: {
+    title: "Terms and Conditions | Youth Club of Mirzapur",
+    description:
+      "Read the Terms and Conditions and community guidelines for joining the Youth Club of Mirzapur.",
+    url: "/terms",
+  },
 };
 
 export default function TermsConditionsPage() {
