@@ -72,3 +72,21 @@ export interface EventComment {
     full_name: string;
   };
 }
+
+export interface EventAccountIncome {
+  id: string;
+  event_id: string;
+  person_name: string;
+  amount: number;
+  date_added: string;
+  added_by: string;
+}
+
+export interface EventAccountExpense {
+  id: string;
+  event_id: string;
+  description: string;
+  amount: number;
+  date_added: string;
+  added_by: string;
+}
