@@ -94,8 +94,6 @@ export default function CommentsComponent({
     };
   }, [eventId, supabase]);
 
-  console.log(localComments);
-
   const handlePostComment = async () => {
     if (!newComment.trim()) return;
 
@@ -168,7 +166,7 @@ export default function CommentsComponent({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="h-5 w-5 text-muted-foreground "
                       onClick={() => handleDelete(comment.id, isOwnComment)}
                     >
                       <Trash2 className="h-4 w-4" />
