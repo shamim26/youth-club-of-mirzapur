@@ -101,7 +101,7 @@ export function LoginForm() {
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-card px-2 text-muted-foreground font-medium pr-4">
-              Or continue with email/phone
+              Or continue with email
             </span>
           </div>
         </div>
@@ -114,11 +114,11 @@ export function LoginForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-semibold">
-                    Email or Phone Number
+                    Email
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your email or phone..."
+                      placeholder="Enter your email"
                       className="h-12 bg-background border-border focus-visible:ring-primary focus-visible:ring-offset-background"
                       {...field}
                     />
