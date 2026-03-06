@@ -142,6 +142,9 @@ export function ExpenseSection({
             <Table className="print:text-black print:border print:border-collapse print:border-gray-300">
               <TableHeader className="bg-muted/50 print:bg-white">
                 <TableRow className="print:border-b print:border-gray-300">
+                  <TableHead className="w-[50px] text-center print:border print:border-gray-300">
+                    #
+                  </TableHead>
                   <TableHead className="print:border print:border-gray-300">
                     Description
                   </TableHead>
@@ -173,11 +176,14 @@ export function ExpenseSection({
                     </TableCell>
                   </TableRow>
                 ) : (
-                  expenses.map((item) => (
+                  expenses.map((item, index) => (
                     <TableRow
                       key={item.id}
                       className="hover:bg-muted/30 transition-colors print:hover:bg-white"
                     >
+                      <TableCell className="font-medium text-center print:border print:border-gray-300">
+                        {index + 1}
+                      </TableCell>
                       <TableCell className="font-medium print:border print:border-gray-300">
                         {item.description}
                       </TableCell>
@@ -209,10 +215,13 @@ export function ExpenseSection({
                 )}
                 {/* Print Total Row */}
                 <TableRow className="hidden print:table-row font-bold hover:bg-transparent">
-                  <TableCell className="px-4 py-2 print:border-t print:border-gray-800">
+                  <TableCell
+                    colSpan={2}
+                    className="px-4 py-2 text-right print:border-t print:border-gray-800"
+                  >
                     Total Expense
                   </TableCell>
-                  <TableCell className="px-4 py-2 text-right">
+                  <TableCell className="px-4 py-2 text-right print:border-t print:border-gray-800">
                     {totalExpense.toLocaleString()}
                   </TableCell>
                   <TableCell className="print:hidden"></TableCell>
