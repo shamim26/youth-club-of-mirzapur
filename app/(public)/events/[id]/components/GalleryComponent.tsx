@@ -125,7 +125,7 @@ export default function GalleryComponent({
           {photos.map((photo) => (
             <div
               key={photo.id}
-              className="group relative aspect-square rounded-lg overflow-hidden border bg-muted"
+              className="group relative aspect-6/10 md:aspect-square rounded-lg overflow-hidden border bg-muted"
             >
               {/* Low-quality preview initially, full quality loaded dynamically. Handled by image size optimization or proxying in a real production Next app. For now, native img supports dynamic src. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -140,7 +140,7 @@ export default function GalleryComponent({
               />
 
               {/* Hover overlay: Caption and Uploader Name */}
-              <div className="absolute inset-x-0 bottom-0 bg-black/70 backdrop-blur-sm text-white p-3 truncate translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex flex-col gap-1">
+              <div className="absolute inset-x-0 bottom-0 bg-black/70 backdrop-blur-sm text-white p-3 truncate translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300 flex flex-col gap-1">
                 {photo.caption && (
                   <span className="text-sm font-medium">{photo.caption}</span>
                 )}
@@ -150,7 +150,7 @@ export default function GalleryComponent({
               </div>
 
               {/* Download & Delete Actions */}
-              <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                 {isApproved && (
                   <Button
                     variant="secondary"

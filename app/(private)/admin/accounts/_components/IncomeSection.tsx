@@ -139,6 +139,9 @@ export function IncomeSection({
             <Table className="print:text-black print:border print:border-collapse print:border-gray-300">
               <TableHeader className="bg-muted/50 print:bg-white">
                 <TableRow className="print:border-b print:border-gray-300">
+                  <TableHead className="w-[50px] text-center print:border-r print:border-gray-300">
+                    #
+                  </TableHead>
                   <TableHead className="print:border-r print:border-gray-300">
                     Name
                   </TableHead>
@@ -170,11 +173,14 @@ export function IncomeSection({
                     </TableCell>
                   </TableRow>
                 ) : (
-                  incomes.map((item) => (
+                  incomes.map((item, index) => (
                     <TableRow
                       key={item.id}
                       className="hover:bg-muted/30 transition-colors print:hover:bg-white"
                     >
+                      <TableCell className="font-medium text-center print:border print:border-gray-300">
+                        {index + 1}
+                      </TableCell>
                       <TableCell className="font-medium print:border print:border-gray-300">
                         {item.person_name}
                       </TableCell>
@@ -206,9 +212,11 @@ export function IncomeSection({
                 )}
                 {/* Print Total Row */}
                 <TableRow className="hidden print:table-row font-bold hover:bg-transparent">
-                  <TableCell className="px-4 py-2 flex justify-between print:border-t">
-                    <span>Total Income</span>
-                    <span>{totalIncome.toLocaleString()} Tk</span>
+                  <TableCell colSpan={2} className="px-4 py-2 print:border-t">
+                    <div className="flex justify-between w-full">
+                      <span>Total Income</span>
+                      <span>{totalIncome.toLocaleString()} Tk</span>
+                    </div>
                   </TableCell>
                   <TableCell className="print:hidden"></TableCell>
                   <TableCell className="print:hidden"></TableCell>
