@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import Image from "next/image";
 import { EventPhoto } from "@/types/events";
 import { Metadata } from "next";
 
@@ -164,12 +163,11 @@ function PhotoCard({
   return (
     <div className="relative rounded-xl overflow-hidden shadow-sm border border-border/30 group hover:border-primary/50 transition-colors bg-muted/20">
       <div className="relative w-full aspect-4/5 sm:aspect-3/4 overflow-hidden">
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={photo.url}
-          alt={photo.caption || "Event Photo"}
-          fill
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          alt={photo.caption || "Event photo"}
+          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
         />
         {/* Hover/Active Info Overlay */}
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 active:opacity-100">

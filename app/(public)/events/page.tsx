@@ -50,9 +50,13 @@ export function EventCard({ event }: { event: YouthEvent }) {
                   </span>
                 </div>
               )}
-              {event.is_published && (
+              {event.event_date && new Date(event.event_date) > new Date() ? (
                 <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase shadow-sm">
                   Upcoming
+                </span>
+              ) : (
+                <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase shadow-sm">
+                  Past
                 </span>
               )}
             </div>

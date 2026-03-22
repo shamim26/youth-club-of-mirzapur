@@ -38,6 +38,13 @@ export default function GalleryComponent({
   const handleAddPhotos = async () => {
     if (!fileInputRef.current?.files?.length) return;
 
+    if (fileInputRef.current.files.length > 5) {
+      toast.error(
+        "You can only upload up to 5 photos at once to prevent rate limits.",
+      );
+      return;
+    }
+
     setIsUploading(true);
 
     const formData = new FormData();
@@ -51,17 +58,27 @@ export default function GalleryComponent({
       formData.append("files", file);
     });
 
-    const { success, error } = await uploadEventPhotos(formData);
+    try {
+      const { success, error } = await uploadEventPhotos(formData);
 
-    if (success) {
-      toast.success("Photos added to gallery");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      setCaption("");
-      router.refresh();
-    } else {
-      toast.error(error || "Failed to add photos");
+      if (success) {
+        toast.success("Photos added to gallery");
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        setCaption("");
+        router.refresh();
+      } else {
+        toast.error(error || "Failed to add photos");
+      }
+    } catch (err: unknown) {
+      console.error("Upload error:", err);
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to add photos. File may be too large.";
+      toast.error(errorMessage);
+    } finally {
+      setIsUploading(false);
     }
-    setIsUploading(false);
   };
 
   const handleDelete = async (photoId: string) => {

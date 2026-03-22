@@ -318,41 +318,46 @@ export async function uploadEventPhotos(formData: FormData) {
       throw new Error("Missing event ID, title, or files");
     }
 
+    const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
+    const telegramChatId = process.env.TELEGRAM_CHAT_ID;
+
+    if (!telegramToken || !telegramChatId) {
+      throw new Error("Telegram configuration is missing.");
+    }
+
     const uploadedRecords = [];
-    const folderName = eventTitle.replace(/[^a-z0-9]/gi, "_").toLowerCase();
 
     for (const file of files) {
       if (!file || typeof file === "string") continue;
 
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${folderName}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const tgFormData = new FormData();
+      tgFormData.append("chat_id", telegramChatId);
+      tgFormData.append("document", file);
 
-      // Convert the FormData File into a format Supabase can reliably upload from edge/Node
-      const arrayBuffer = await file.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
-      // Upload file buffer to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from("event-photos")
-        .upload(fileName, buffer, {
-          contentType: file.type,
-          upsert: false,
-        });
-
-      if (uploadError) {
-        console.error("Supabase Storage Upload error:", uploadError);
-        throw new Error(
-          `Storage upload failed: ${uploadError.message}. Did you create the public 'event-photos' bucket and add RLS policies?`,
-        );
+      if (caption) {
+        tgFormData.append("caption", caption);
       }
 
-      const { data: publicUrlData } = supabase.storage
-        .from("event-photos")
-        .getPublicUrl(fileName);
+      const tgResponse = await fetch(
+        `https://api.telegram.org/bot${telegramToken}/sendDocument`,
+        {
+          method: "POST",
+          body: tgFormData,
+        },
+      );
+
+      const tgResult = await tgResponse.json();
+
+      if (!tgResult.ok) {
+        console.error("Telegram upload error:", tgResult);
+        throw new Error(`Telegram upload failed: ${tgResult.description}`);
+      }
+
+      const fileId = tgResult.result.document.file_id;
 
       uploadedRecords.push({
         event_id: eventId,
-        url: publicUrlData.publicUrl,
+        url: `/api/tg-image?fileId=${fileId}`,
         caption: caption || null,
         uploaded_by: user.id,
       });
